@@ -20,6 +20,7 @@ public class HelperCar extends HelperBase{
     }
 
     public void fillCarForm(Car car){
+        pause(5000);
         if(isCarFormPresent()==false) return;
         typeLocation(car.getLocation());
         type(By.id("make"), car.getMake());
@@ -28,7 +29,9 @@ public class HelperCar extends HelperBase{
         select(By.id("fuel"), car.getFuel());
         type(By.id("seats"), car.getSeats());
         type(By.id("class"), car.getCarClass());
-        type(By.id("serialNumber"), car.getCarReqNumber());
+     // type(By.id("serialNumber"), car.getCarReqNumber());
+        typeByXY(By.id("serialNumber"), car.getCarReqNumber());
+        pause(3000);
         type(By.id("price"), car.getPrice());
     }
 

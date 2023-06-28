@@ -45,7 +45,9 @@ public class RegistrationTests extends TestBase{
     }
 
     @AfterMethod
+
     public void postcondition(){
+        if (app.getUser().isRegistrationSuccess()==true) return;
         app.getUser().clickOKButton();
     }
 }

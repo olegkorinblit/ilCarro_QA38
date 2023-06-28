@@ -1,7 +1,9 @@
 package manager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 public class HelperBase {
     WebDriver wd;
@@ -31,5 +33,20 @@ public class HelperBase {
         return wd.findElements(locator).size() > 0;
 
     }
+    //HW:10
+    //1. доработать метод заполнения формы добавления автомобиля в проекте ILCarro так, чтобы поле Car registration number
+    // заполнялось через клик по координатам
+    public void typeByXY(By locator, String RegNumb ) {
+        Rectangle rect = wd.findElement(locator).getRect();
+        int x = rect.getX() + rect.getWidth()/2+20;
+        int y = rect.getY() + rect.getHeight()/2+10;
+        Actions actions = new Actions(wd);
+        actions.moveByOffset(x, y).click().sendKeys(RegNumb);
+
+
+
+
+
 
 }
+    }
