@@ -17,7 +17,34 @@ dependencies {
 
     testCompileOnly 'org.projectlombok:lombok:1.18.28'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
+
 }
 test {
     useTestNG()
+}
+task mytest(type: Test) {
+    useTestNG() {
+        def suite = System.getProperty('suite', '')
+        if (suite.equals('registration')) {
+            suites 'src/test/resources/reg.xml'
+        } else if (suite.equals('add')) {
+            suites 'src/test/resources/add.xml'
+
+
+        } else if (suite.equals('login')) {
+            suites 'src/test/resources/remove.xml'
+        }
+        else if (suite.equals('search')) {
+            suites 'src/test/resources/search.xml'
+        }
+        else {
+            suites 'src/test/resources/testng.xml'
+        }
+
+
+    }
+    if (project.hasProperty('browser')) {
+        systemProperty('browser', "$browser")
+    }
 }

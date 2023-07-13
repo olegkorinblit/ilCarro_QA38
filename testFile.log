@@ -1,0 +1,2 @@
+04:22:02 INFO  tests.TestBase - RegistrationPositive starts with credentials:login  oleg_1321@mail.com and password:  $Asdf1234
+04:22:44 INFO  tests.TestBase - RegistrationPositive starts with credentials:login  oleg_1363@mail.com and password:  $Asdf1234

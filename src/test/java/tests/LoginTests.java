@@ -5,6 +5,8 @@ import models.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -32,6 +34,7 @@ Task 2.
 (должен быть представлен свой вариант решения и сформулирован конкретный вопрос).
  */
 public class LoginTests extends TestBase {
+    Logger logger= LoggerFactory.getLogger(LoginTests.class);
     @BeforeMethod
     public void preCondition() {
         if (app.getUser().isLogged()) {
@@ -49,17 +52,6 @@ public void RegistrationPositive() {
                 ;
 
 }
-@Test
-public void registrationNegativeWrongEmail() {
-        int i=(int)(System.currentTimeMillis()/1000)%3600;
-    String email="oleg"+i+"@mail.ru";
-    String password="Oleg1980!";
-    app.getUser().openLoginForm();
-    app.getUser().fillLoginForm(email, password);
-    app.getUser().submitRegistration();
-
-
-    }
 */
     @Test
 
@@ -74,9 +66,15 @@ public void registrationNegativeWrongEmail() {
         Assert.assertTrue(app.getUser().isLoggedSuccess());
     }
 
+
+
+
+
     @Test
     public void loginPositiveUser() {
-        User user = new User().withEmail("oleg@mail.ru").withPassword("Oleg1980!");
+        User user = new User()
+                .withEmail("oleg@mail.ru")
+                .withPassword("Oleg1980!");
         //  String email = "oleg@mail.ru", password = "Oleg1980!";
 app.getUser().pause(5000);
         app.getUser().openLoginForm();
@@ -86,13 +84,56 @@ app.getUser().pause(5000);
         app.getUser().pause(5000);
         Assert.assertTrue(app.getUser().isElementPresent(By.xpath("//button[.='Ok']")));
     }
+    @Test
+    public void loginNegativeEmailWrong() {
+        User user = new User()
+                .withEmail("@mail.ru")
+                .withPassword("Oleg1980!");
+        //  String email = "oleg@mail.ru", password = "Oleg1980!";
+        app.getUser().pause(3000);
+        app.getUser().openLoginForm();
+        app.getUser().pause(3000);
+        app.getUser().fillLoginForm(user);
+        app.getUser().clickLogin();
+        app.getUser().pause(3000);
+        Assert.assertTrue(app.getUser().isWrongEmailLogin());
+
+    }
+    @Test
+    public void loginNegative() {
+        User user = new User()
+                .withEmail("oleg@mail.ru")
+                .withPassword("Oleg19");
+        //  String email = "oleg@mail.ru", password = "Oleg1980!";
+        app.getUser().pause(3000);
+        app.getUser().openLoginForm();
+        app.getUser().pause(3000);
+        app.getUser().fillLoginForm(user);
+        app.getUser().clickLogin();
+        app.getUser().pause(3000);
+        Assert.assertTrue(app.getUser().isLoginNegative());
+        app.getUser().clickOkButton();
+      //  Assert.assertTrue(app.getUser().isLoginNegative1());
+    }
+//    @Test
+//    public void loginPositiveUserDTO(User user) {
+//        User user = new User().withEmail("oleg@mail.ru").withPassword("Oleg1980!");
+//          String email = "oleg@mail.ru", password = "Oleg1980!";
+//        app.getUser().pause(5000);
+//        app.getUser().openLoginForm();
+//        app.getUser().pause(5000);
+//        app.getUser().fillLoginForm(user);
+//        app.getUser().submitLogin();
+//        app.getUser().pause(5000);
+//        Assert.assertTrue(app.getUser().isElementPresent(By.xpath("//button[.='Ok']")));
+//    }
 
     @AfterMethod
     public void postCondition() {
-        if (app.getUser().isLogged()) {
-            app.getUser().pause(3000);
-            app.getUser().clickOKButton();
-            app.getUser().pause(3000);
+            if (app.getUser().isLogged()) {
+                app.getUser().pause(3000);
+                app.getUser().clickOkButton();
+                app.getUser().pause(3000);
+            }
         }
-    }
 }
