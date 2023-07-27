@@ -1,6 +1,7 @@
 package tests;
 
 import manager.HelperUser;
+import manager.ProviderData;
 import models.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -35,13 +36,13 @@ Task 2.
  */
 public class LoginTests extends TestBase {
     Logger logger= LoggerFactory.getLogger(LoginTests.class);
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void preCondition() {
-        if (app.getUser().isLogged()) {
 
-           app.getUser().logout();
-            app.getUser().pause(3000);
-       }
+        if (app.getUser().isLogged()) {
+            app.getUser().logout();
+        }
+
     }
     /*
 @Test
@@ -53,7 +54,7 @@ public void RegistrationPositive() {
 
 }
 */
-    @Test
+    @Test(groups = {"smoke,positive"},alwaysRun = true)
 
 
     public void loginPositive() {
@@ -62,7 +63,7 @@ public void RegistrationPositive() {
         app.getUser().openLoginForm();
         app.getUser().fillLoginForm(email, password);
         app.getUser().submitLogin();
-        app.getUser().pause(5000);
+        app.getUser().pause(2000);
         Assert.assertTrue(app.getUser().isLoggedSuccess());
     }
 
@@ -70,50 +71,77 @@ public void RegistrationPositive() {
 
 
 
-    @Test
+    @Test(groups = {"regress,positive"},alwaysRun = true)
     public void loginPositiveUser() {
         User user = new User()
                 .withEmail("oleg@mail.ru")
                 .withPassword("Oleg1980!");
         //  String email = "oleg@mail.ru", password = "Oleg1980!";
-app.getUser().pause(5000);
+app.getUser().pause(2000);
         app.getUser().openLoginForm();
-        app.getUser().pause(5000);
+        app.getUser().pause(2000);
         app.getUser().fillLoginForm(user);
         app.getUser().submitLogin();
-        app.getUser().pause(5000);
+        app.getUser().pause(2000);
         Assert.assertTrue(app.getUser().isElementPresent(By.xpath("//button[.='Ok']")));
     }
-    @Test
+
+
+    @Test(groups = {"smoke,negative"},alwaysRun = true)
     public void loginNegativeEmailWrong() {
         User user = new User()
                 .withEmail("@mail.ru")
                 .withPassword("Oleg1980!");
         //  String email = "oleg@mail.ru", password = "Oleg1980!";
-        app.getUser().pause(3000);
+        app.getUser().pause(2000);
         app.getUser().openLoginForm();
-        app.getUser().pause(3000);
+        app.getUser().pause(2000);
         app.getUser().fillLoginForm(user);
         app.getUser().clickLogin();
-        app.getUser().pause(3000);
+        app.getUser().pause(2000);
         Assert.assertTrue(app.getUser().isWrongEmailLogin());
 
     }
-    @Test
+    @Test(groups = {"regress,negative"},alwaysRun = true)
     public void loginNegative() {
         User user = new User()
                 .withEmail("oleg@mail.ru")
                 .withPassword("Oleg19");
         //  String email = "oleg@mail.ru", password = "Oleg1980!";
-        app.getUser().pause(3000);
+        app.getUser().pause(2000);
         app.getUser().openLoginForm();
-        app.getUser().pause(3000);
+        app.getUser().pause(2000);
         app.getUser().fillLoginForm(user);
         app.getUser().clickLogin();
-        app.getUser().pause(3000);
+        app.getUser().pause(2000);
         Assert.assertTrue(app.getUser().isLoginNegative());
+        app.getUser().pause(2000);
         app.getUser().clickOkButton();
-      //  Assert.assertTrue(app.getUser().isLoginNegative1());
+        Assert.assertTrue(app.getUser().isLoginNegative1());
+    }
+//    @Test(groups = {"smoke,positive"},dataProvider ="userDto", dataProviderClass = ProviderData.class,alwaysRun = true )
+//    public void loginPositiveUserDTO(User user) {
+//        User user = new User()
+//                .withEmail("oleg@mail.ru")
+//                .withPassword("Oleg1980!");
+        //  String email = "oleg@mail.ru", password = "Oleg1980!";
+//        app.getUser().pause(5000);
+//        app.getUser().openLoginForm();
+//        app.getUser().pause(2000);
+//        app.getUser().fillLoginForm(user);
+//        app.getUser().submitLogin();
+//        app.getUser().pause(2000);
+//        Assert.assertTrue(app.getUser().isElementPresent(By.xpath("//button[.='Ok']")));
+//    }
+   // @Test(groups = {"regress,positive"},alwaysRun = true)
+    public void loginPositiveProps() {
+
+
+        app.getUser().openLoginForm();
+        app.getUser().fillLoginForm(app.getEmail(), app.getPassword());
+        app.getUser().submitLogin();
+        app.getUser().pause(2000);
+        Assert.assertTrue(app.getUser().isLoggedSuccess());
     }
 //    @Test
 //    public void loginPositiveUserDTO(User user) {
@@ -126,9 +154,22 @@ app.getUser().pause(5000);
 //        app.getUser().submitLogin();
 //        app.getUser().pause(5000);
 //        Assert.assertTrue(app.getUser().isElementPresent(By.xpath("//button[.='Ok']")));
+//    }    @Test
+//    public void loginPositiveUser() {
+//        User user = new User()
+//                .withEmail("oleg@mail.ru")
+//                .withPassword("Oleg1980!");
+//        //  String email = "oleg@mail.ru", password = "Oleg1980!";
+//app.getUser().pause(5000);
+//        app.getUser().openLoginForm();
+//        app.getUser().pause(5000);
+//        app.getUser().fillLoginForm(user);
+//        app.getUser().submitLogin();
+//        app.getUser().pause(5000);
+//        Assert.assertTrue(app.getUser().isElementPresent(By.xpath("//button[.='Ok']")));
 //    }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void postCondition() {
             if (app.getUser().isLogged()) {
                 app.getUser().pause(3000);

@@ -23,8 +23,7 @@ public class Car {
     String about;
 
 
-    String searchCity;
-    String searchDate;
+
 
 
 

@@ -1,0 +1,15 @@
+<suite name="ProductionPositive" verbose="1" >
+    <groups>
+        <run>
+            <include name="positive"/>
+        </run>
+    </groups>
+    <test name="positive_tests" >
+        <classes>
+<!--            <class name="tests.LoginTests" />-->
+<!--            <class name="tests.RegistrationTests" />-->
+<!--            <class name="tests.AddNewCar" />-->
+            <class name="tests.SearchTests" />
+        </classes>
+    </test>
+</suite>

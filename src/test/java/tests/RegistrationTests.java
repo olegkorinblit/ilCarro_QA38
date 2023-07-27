@@ -1,5 +1,6 @@
 package tests;
 
+import manager.ProviderData;
 import manager.TestNgListener;
 import models.User;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
@@ -11,19 +12,20 @@ import org.testng.annotations.Test;
 @Listeners(TestNgListener.class)
 public class RegistrationTests extends TestBase{
     EventFiringWebDriver wd;
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void precondition(){
-        if(app.getUser().isLogged()) app.getUser().logout();
+        if(app.getUser().isLogged())
+            app.getUser().logout();
 
     }
 
-    @Test
-    public void registrationPositive(){
+    @Test(groups = {"regress,positive"},alwaysRun = true)
+    public void registrationAbPositive(){
         int i = (int)(System.currentTimeMillis()/1000)%3600;
         User user = new User()
                 .withName("John")
                 .withLastName("Snow")
-                .withEmail("oleg_" + i + "@mail.com")
+                .withEmail("ajjgyt_" + i + "@mail.com")
                 .withPassword("$Asdf1234");
 
         app.getUser().openRegistrationForm();
@@ -35,15 +37,16 @@ public class RegistrationTests extends TestBase{
         logger.info("RegistrationPositive starts with credentials:login  "
                 + user.getEmail()+" and password:  "+ user.getPassword());
         Assert.assertTrue(app.getUser().isLoggedSuccess());
+       // app.getUser().clickOkButton();
 
     }
-    @Test
+    @Test(groups ={"regress,negative"},alwaysRun = true)
     public void registrationNegativePassword(){
         int i = (int)(System.currentTimeMillis()/1000)%3600;
         User user = new User()
                 .withName("John")
                 .withLastName("Snow")
-                .withEmail("oleg_" + i + "@mail.com")
+                .withEmail("nalc_" + i + "@mail.com")
                 .withPassword("Asdf1234");
 
         app.getUser().openRegistrationForm();
@@ -52,10 +55,11 @@ public class RegistrationTests extends TestBase{
 logger.info("RegistrationNegativePassword starts with credentials"
         + user.getEmail()+" and "+ user.getPassword());
         Assert.assertTrue(app.getUser().isRegistrationSuccess());
+      //  app.getUser().clickOkButton();
     }
-    @Test
-    public void registrationNegativeWrongEmail(){
-        int i = (int)(System.currentTimeMillis()/1000)%3600;
+    @Test(groups ={"smoke,negative"},alwaysRun = true)
+    public void registrationAzNegativeWrongEmail(){
+       // int i = (int)(System.currentTimeMillis()/1000)%3600;
         User user = new User()
                 .withName("John")
                 .withLastName("Snow")
@@ -68,6 +72,27 @@ logger.info("RegistrationNegativePassword starts with credentials"
         logger.info("RegistrationNegativePassword starts with credentials"
                 + user.getEmail()+" and "+ user.getPassword());
         Assert.assertTrue(app.getUser().isRegistrationSuccessEmailWrong());
+      //  app.getUser().clickOkButton();
+    }
+    //@Test(groups = {"smoke,positive"},dataProvider ="userDtoCSV",dataProviderClass = ProviderData.class,alwaysRun = true)
+    public void registrationPositiveDTO(User user){
+        int i = (int)(System.currentTimeMillis()/1000)%3600;
+//        User user = new User()
+//                .withName("John")
+//                .withLastName("Snow")
+//                .withEmail("oleg_" + i + "@mail.com")
+//                .withPassword("$Asdf1234");
+
+        app.getUser().openRegistrationForm();
+        logger.info("openRegistrationForm invoked");
+        app.getUser().fillRegistrationForm(user);
+        logger.info("fillRegistrationForm invoked");
+        app.getUser().submitLogin();
+        logger.info("submitLogin invoked");
+        logger.info("RegistrationPositive starts with credentials:login  "
+                + user.getEmail()+" and password:  "+ user.getPassword());
+        Assert.assertTrue(app.getUser().isLoggedSuccess());
+       // app.getUser().clickOkButton();
     }
 //    @Test
 //    public void registrationNegativeWrongEmail() {
@@ -80,12 +105,14 @@ logger.info("RegistrationNegativePassword starts with credentials"
 //        app.getUser().clickOkButton();
 //        Assert.assertTrue();
 //    }
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
 
     public void postcondition(){
-      //  if (app.getUser().isRegistrationSuccess()==true) return;
+        app.getUser().clickOkButton();
+        if (app.getUser().isRegistrationSuccess()==true)
         app.getUser().clickOkButton();
         app.getUser().pause(3000);
+
 
     }
 
