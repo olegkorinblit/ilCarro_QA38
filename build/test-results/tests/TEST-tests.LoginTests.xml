@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tests.LoginTests" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-07-27T18:45:42" hostname="OK" time="50.378">
+  <properties/>
+  <testcase name="loginNegative" classname="tests.LoginTests" time="8.613"/>
+  <testcase name="loginNegativeEmailWrong" classname="tests.LoginTests" time="6.461"/>
+  <testcase name="loginPositive" classname="tests.LoginTests" time="2.38"/>
+  <testcase name="loginPositiveUser" classname="tests.LoginTests" time="6.443"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
